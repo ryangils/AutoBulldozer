@@ -34,4 +34,5 @@ Added sweeps-per-day setting (1-64).
 Added per-category statistics and a reset button.
 Options now gray out when the master switch is off.
   </ChangeLog>
+  <ExternalLink Type="github" Url="https://github.com/ryangils/AutoBulldozer" />
 </Publish>
