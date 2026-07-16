@@ -1,7 +1,7 @@
 <Publish>
   <!-- Leave empty for first publish; the toolchain fills it in and you keep it for updates. -->
   <ModId Value="151415" />
-  <DisplayName Value="Auto Bulldozer" />
+  <DisplayName Value="Auto Bulldozer [Beta]" />
   <ShortDescription Value="Automatically demolishes abandoned, condemned, and destroyed buildings." />
   <LongDescription>
 # Auto Bulldozer
@@ -21,6 +21,8 @@ Tired of manually clearing abandoned buildings? This mod does it for you.
 ## Notes
 - Demolition uses the game's own deletion pipeline, so it's save-safe
 - Safe to add or remove from a save at any time
+- Source Code can be found on [GitHub](https://github.com/ryangils/AutoBulldozer)
+- Any complaints please post them on the [forum](https://forum.paradoxplaza.com/forum/threads/auto-bulldozer-beta-issues-complaints-can-be-posted-here.1934999/) or Discord
   </LongDescription>
   <!-- Add a 1:1 PNG (min 256x256) before publishing. -->
   <Thumbnail Value="Properties/Thumbnail.png" />
@@ -30,7 +32,7 @@ Tired of manually clearing abandoned buildings? This mod does it for you.
   <Screenshot Value="Properties/Screenshot4.png" />
   <Screenshot Value="Properties/Screenshot5.png" />
   <Tag Value="Code Mod" />
-  <ForumLink Value="" />
+  <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/auto-bulldozer-beta-issues-complaints-can-be-posted-here.1934999/" />
   <ModVersion Value="1.1.0" />
   <GameVersion Value="1.6.*" />
   <ChangeLog>
