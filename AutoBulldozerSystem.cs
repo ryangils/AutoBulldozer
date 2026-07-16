@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game;
 using Game.Buildings;
 using Game.Common;
+using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
 using Unity.Collections;
@@ -141,8 +142,53 @@ namespace AutoBulldozer
 
             if (setting.DemolishDestroyed)
             {
-                TotalDestroyed += Demolish(m_DestroyedQuery, "destroyed");
+                TotalDestroyed += DemolishDestroyed();
             }
+        }
+
+        /// <summary>
+        /// Clears destroyed buildings, but only zoned growables — the game regrows
+        /// a new building on the freed zone cells. Service, signature and other
+        /// player-placed buildings are left alone so their services aren't lost and
+        /// the player can rebuild them deliberately.
+        /// </summary>
+        private int DemolishDestroyed()
+        {
+            if (m_DestroyedQuery.IsEmptyIgnoreFilter)
+            {
+                return 0;
+            }
+
+            var entities = m_DestroyedQuery.ToEntityArray(Allocator.Temp);
+            var demolished = 0;
+
+            foreach (var entity in entities)
+            {
+                if (!EntityManager.HasComponent<PrefabRef>(entity))
+                {
+                    continue;
+                }
+
+                // Only zoned growables carry SpawnableBuildingData on their prefab;
+                // everything else (services, signatures, unique/placed buildings) is skipped.
+                var prefab = EntityManager.GetComponentData<PrefabRef>(entity).m_Prefab;
+                if (!EntityManager.HasComponent<SpawnableBuildingData>(prefab))
+                {
+                    continue;
+                }
+
+                EntityManager.AddComponent<Deleted>(entity);
+                demolished++;
+            }
+
+            entities.Dispose();
+
+            if (demolished > 0)
+            {
+                Mod.Log.Info($"Cleared {demolished} destroyed growable building(s). Session total: {TotalDemolished + demolished}.");
+            }
+
+            return demolished;
         }
 
         /// <summary>

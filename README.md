@@ -37,6 +37,8 @@ If the build fails with missing references or import errors, `CSII_TOOLPATH` isn
 
 `AutoBulldozerSystem` is an ECS system that runs during the simulation phase (1–64 sweeps per in-game day, configurable, default 16; no cost while paused or in menus). It queries buildings tagged `Abandoned`, `Condemned`, or `Destroyed` (excluding temporary tool previews and already-deleted entities) and adds the game's `Deleted` component, letting the vanilla deletion pipeline tear them down cleanly — sub-buildings, renters, and network connections included. Because it only adds a vanilla component, it's save-safe and can be added or removed from a save at any time.
 
+**Destroyed buildings** are handled more conservatively: only zoned growables (residential/commercial/industrial/office, identified by `SpawnableBuildingData` on their prefab) are cleared, since the game regrows a building on the freed zone cells. Service buildings, signature buildings, and anything the player placed by hand are skipped, so the option can never delete a service the player would otherwise rebuild.
+
 The optional **grace period** delays demolition of abandoned buildings by N in-game days. The system tracks the first sweep at which it saw each building abandoned (in memory only — after loading a save the countdown restarts, which errs on the side of demolishing later, never sooner) and only demolishes buildings whose grace period has elapsed. Buildings that get re-occupied or player-bulldozed in the meantime are dropped from tracking automatically.
 
 ## Files

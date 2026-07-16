@@ -11,7 +11,7 @@ Tired of manually clearing abandoned buildings? This mod does it for you.
 ## Features
 - Automatically demolishes **abandoned** buildings (on by default)
 - Optionally demolishes **condemned** buildings
-- Optionally clears **destroyed** buildings (fire/disaster rubble)
+- Optionally clears **destroyed** zoned buildings (fire/disaster rubble) — the game regrows them, and service/placed buildings are never touched
 - Master on/off switch and per-category toggles in Options → Mods → Auto Bulldozer
 - **Grace period**: optionally wait N in-game days before demolishing abandoned buildings, giving them a chance to be re-occupied
 - **Adjustable sweep frequency** (1–64 scans per in-game day)
@@ -26,20 +26,17 @@ Tired of manually clearing abandoned buildings? This mod does it for you.
   </LongDescription>
   <!-- Add a 1:1 PNG (min 256x256) before publishing. -->
   <Thumbnail Value="Properties/Thumbnail.png" />
-  <Screenshot Value="Properties/Screenshot1.png" />
-  <Screenshot Value="Properties/Screenshot2.png" />
-  <Screenshot Value="Properties/Screenshot3.png" />
-  <Screenshot Value="Properties/Screenshot4.png" />
-  <Screenshot Value="Properties/Screenshot5.png" />
+  <Screenshot Value="Properties/Screenshot1.jpg" />
+  <Screenshot Value="Properties/Screenshot2.jpg" />
+  <Screenshot Value="Properties/Screenshot3.jpg" />
+  <Screenshot Value="Properties/Screenshot4.jpg" />
+  <Screenshot Value="Properties/Screenshot5.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/auto-bulldozer-beta-issues-complaints-can-be-posted-here.1934999/" />
-  <ModVersion Value="1.1.0" />
+  <ModVersion Value="1.2.0" />
   <GameVersion Value="1.6.*" />
   <ChangeLog>
-Added grace period for abandoned buildings (0-30 in-game days).
-Added sweeps-per-day setting (1-64).
-Added per-category statistics and a reset button.
-Options now gray out when the master switch is off.
+"Clear destroyed buildings" now only clears zoned growables (which the game regrows) and never touches service buildings, signature buildings or anything you placed by hand — so you can no longer lose a service to it.
   </ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/ryangils/AutoBulldozer" />
 </Publish>

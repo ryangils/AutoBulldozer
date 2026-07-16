@@ -34,8 +34,8 @@ namespace AutoBulldozer
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.DemolishCondemned)), "Demolish condemned buildings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.DemolishCondemned)), "Automatically demolish buildings that have been condemned (e.g. below required level)." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.DemolishDestroyed)), "Clear destroyed buildings" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.DemolishDestroyed)), "Automatically clear rubble of buildings destroyed by fire or disasters. Note: this skips the vanilla rebuild process." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.DemolishDestroyed)), "Clear destroyed growable buildings" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.DemolishDestroyed)), "Automatically clear rubble of zoned (residential/commercial/industrial/office) buildings destroyed by fire or disasters, so the game regrows them. Service buildings, signature buildings and anything you placed by hand are left alone, so you never lose a service and can rebuild them yourself." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AbandonedGraceDays)), "Grace period for abandoned buildings (days)" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AbandonedGraceDays)), "How many in-game days a building must stay abandoned before it is demolished. 0 demolishes on the next sweep. Gives buildings a chance to be re-occupied and gives you a chance to notice problem areas." },

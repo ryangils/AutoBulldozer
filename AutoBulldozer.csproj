@@ -6,7 +6,7 @@
     <RootNamespace>AutoBulldozer</RootNamespace>
     <LangVersion>9.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <!-- Imports from the CS2 Modding Toolchain (install via in-game Options -> Modding).
