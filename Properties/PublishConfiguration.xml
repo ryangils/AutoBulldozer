@@ -24,6 +24,11 @@ Tired of manually clearing abandoned buildings? This mod does it for you.
   </LongDescription>
   <!-- Add a 1:1 PNG (min 256x256) before publishing. -->
   <Thumbnail Value="Properties/Thumbnail.png" />
+  <Screenshot Value="Properties/Screenshot1.png" />
+  <Screenshot Value="Properties/Screenshot2.png" />
+  <Screenshot Value="Properties/Screenshot3.png" />
+  <Screenshot Value="Properties/Screenshot4.png" />
+  <Screenshot Value="Properties/Screenshot5.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
   <ModVersion Value="1.1.0" />
