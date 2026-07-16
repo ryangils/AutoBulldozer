@@ -33,10 +33,10 @@ Tired of manually clearing abandoned buildings? This mod does it for you.
   <Screenshot Value="Properties/Screenshot5.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/auto-bulldozer-beta-issues-complaints-can-be-posted-here.1934999/" />
-  <ModVersion Value="1.2.0" />
+  <ModVersion Value="1.2.1" />
   <GameVersion Value="1.6.*" />
   <ChangeLog>
-"Clear destroyed buildings" now only clears zoned growables (which the game regrows) and never touches service buildings, signature buildings or anything you placed by hand — so you can no longer lose a service to it.
+The abandoned-building grace period now uses the game's own abandonment timestamp, so it is exact and no longer restarts when you load a save.
   </ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/ryangils/AutoBulldozer" />
 </Publish>

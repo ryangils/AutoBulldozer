@@ -39,7 +39,7 @@ If the build fails with missing references or import errors, `CSII_TOOLPATH` isn
 
 **Destroyed buildings** are handled more conservatively: only zoned growables (residential/commercial/industrial/office, identified by `SpawnableBuildingData` on their prefab) are cleared, since the game regrows a building on the freed zone cells. Service buildings, signature buildings, and anything the player placed by hand are skipped, so the option can never delete a service the player would otherwise rebuild.
 
-The optional **grace period** delays demolition of abandoned buildings by N in-game days. The system tracks the first sweep at which it saw each building abandoned (in memory only — after loading a save the countdown restarts, which errs on the side of demolishing later, never sooner) and only demolishes buildings whose grace period has elapsed. Buildings that get re-occupied or player-bulldozed in the meantime are dropped from tracking automatically.
+The optional **grace period** delays demolition of abandoned buildings by N in-game days, read from the game's own `Abandoned.m_AbandonmentTime` timestamp — so it's exact and survives saving/loading. Note that vanilla CS2 (`DestroyAbandonedSystem`) eventually collapses long-abandoned buildings on its own, so a very long grace period may see the building collapse into rubble before the mod demolishes it.
 
 ## Files
 

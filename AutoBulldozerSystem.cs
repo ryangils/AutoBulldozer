@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Game;
 using Game.Buildings;
 using Game.Common;
@@ -34,11 +33,6 @@ namespace AutoBulldozer
         private EntityQuery m_AbandonedQuery;
         private EntityQuery m_CondemnedQuery;
         private EntityQuery m_DestroyedQuery;
-
-        // First simulation frame at which we saw each building abandoned, used for
-        // the grace period. In-memory only: after loading a save the grace period
-        // simply restarts, which errs on the side of demolishing later, not sooner.
-        private readonly Dictionary<Entity, uint> m_AbandonedSince = new Dictionary<Entity, uint>();
 
         private uint m_LastSweepFrame;
 
@@ -130,10 +124,6 @@ namespace AutoBulldozer
                 var graceFrames = (uint)((long)Clamp(setting.AbandonedGraceDays, 0, 30) * kFramesPerDay);
                 TotalAbandoned += DemolishAbandoned(frame, graceFrames);
             }
-            else
-            {
-                m_AbandonedSince.Clear();
-            }
 
             if (setting.DemolishCondemned)
             {
@@ -193,64 +183,38 @@ namespace AutoBulldozer
 
         /// <summary>
         /// Demolishes abandoned buildings, optionally only after they have been
-        /// abandoned for <paramref name="graceFrames"/> simulation frames.
+        /// abandoned for <paramref name="graceFrames"/> simulation frames. Uses the
+        /// game's own <see cref="Abandoned.m_AbandonmentTime"/> timestamp, so the
+        /// grace period is exact and survives saving/loading.
         /// </summary>
         private int DemolishAbandoned(uint frame, uint graceFrames)
         {
             if (m_AbandonedQuery.IsEmptyIgnoreFilter)
             {
-                m_AbandonedSince.Clear();
                 return 0;
             }
 
             if (graceFrames == 0)
             {
-                m_AbandonedSince.Clear();
                 return Demolish(m_AbandonedQuery, "abandoned");
             }
 
             var entities = m_AbandonedQuery.ToEntityArray(Allocator.Temp);
-            var stillAbandoned = new HashSet<Entity>();
             var demolished = 0;
 
             foreach (var entity in entities)
             {
-                if (!m_AbandonedSince.TryGetValue(entity, out var since) || since > frame)
-                {
-                    // Newly abandoned (or a save was loaded); start its grace period.
-                    m_AbandonedSince[entity] = frame;
-                    stillAbandoned.Add(entity);
-                    continue;
-                }
+                var abandonedSince = EntityManager.GetComponentData<Abandoned>(entity).m_AbandonmentTime;
 
-                if (frame - since >= graceFrames)
+                // A timestamp in the future can only come from odd save states; wait it out.
+                if (abandonedSince <= frame && frame - abandonedSince >= graceFrames)
                 {
                     EntityManager.AddComponent<Deleted>(entity);
                     demolished++;
                 }
-                else
-                {
-                    stillAbandoned.Add(entity);
-                }
             }
 
             entities.Dispose();
-
-            // Drop entries for buildings that were demolished, re-occupied,
-            // bulldozed by the player, or belong to a previously loaded city.
-            var stale = new List<Entity>();
-            foreach (var tracked in m_AbandonedSince.Keys)
-            {
-                if (!stillAbandoned.Contains(tracked))
-                {
-                    stale.Add(tracked);
-                }
-            }
-
-            foreach (var entity in stale)
-            {
-                m_AbandonedSince.Remove(entity);
-            }
 
             if (demolished > 0)
             {
