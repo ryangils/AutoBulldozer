@@ -1,6 +1,7 @@
 using Game;
 using Game.Buildings;
 using Game.Common;
+using Game.Notifications;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
@@ -26,13 +27,16 @@ namespace AutoBulldozer
         public static int TotalAbandoned;
         public static int TotalCondemned;
         public static int TotalDestroyed;
+        public static int TotalRenovated;
 
         public static int TotalDemolished => TotalAbandoned + TotalCondemned + TotalDestroyed;
 
         private SimulationSystem m_SimulationSystem;
+        private IconCommandSystem m_IconCommandSystem;
         private EntityQuery m_AbandonedQuery;
         private EntityQuery m_CondemnedQuery;
         private EntityQuery m_DestroyedQuery;
+        private EntityQuery m_BuildingConfigQuery;
 
         private uint m_LastSweepFrame;
 
@@ -41,6 +45,7 @@ namespace AutoBulldozer
             TotalAbandoned = 0;
             TotalCondemned = 0;
             TotalDestroyed = 0;
+            TotalRenovated = 0;
         }
 
         protected override void OnCreate()
@@ -48,6 +53,8 @@ namespace AutoBulldozer
             base.OnCreate();
 
             m_SimulationSystem = World.GetOrCreateSystemManaged<SimulationSystem>();
+            m_IconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
+            m_BuildingConfigQuery = GetEntityQuery(ComponentType.ReadOnly<BuildingConfigurationData>());
 
             m_AbandonedQuery = GetEntityQuery(new EntityQueryDesc
             {
@@ -122,7 +129,14 @@ namespace AutoBulldozer
             if (setting.DemolishAbandoned)
             {
                 var graceFrames = (uint)((long)Clamp(setting.AbandonedGraceDays, 0, 30) * kFramesPerDay);
-                TotalAbandoned += DemolishAbandoned(frame, graceFrames);
+                if (setting.RenovateAbandoned)
+                {
+                    TotalRenovated += RenovateAbandoned(frame, graceFrames);
+                }
+                else
+                {
+                    TotalAbandoned += DemolishAbandoned(frame, graceFrames);
+                }
             }
 
             if (setting.DemolishCondemned)
@@ -134,6 +148,64 @@ namespace AutoBulldozer
             {
                 TotalDestroyed += DemolishDestroyed();
             }
+        }
+
+        /// <summary>
+        /// Renovates abandoned buildings past their grace period instead of
+        /// demolishing them: strips the abandoned state, repairs the building's
+        /// condition and puts the property back on the rental market so new
+        /// tenants can move in. If the underlying problem persists (usually rent
+        /// exceeding what households can pay), the building may abandon again.
+        /// </summary>
+        private int RenovateAbandoned(uint frame, uint graceFrames)
+        {
+            if (m_AbandonedQuery.IsEmptyIgnoreFilter || m_BuildingConfigQuery.IsEmptyIgnoreFilter)
+            {
+                return 0;
+            }
+
+            var config = m_BuildingConfigQuery.GetSingleton<BuildingConfigurationData>();
+            var iconBuffer = m_IconCommandSystem.CreateCommandBuffer();
+            var entities = m_AbandonedQuery.ToEntityArray(Allocator.Temp);
+            var renovated = 0;
+
+            foreach (var entity in entities)
+            {
+                var abandonedSince = EntityManager.GetComponentData<Abandoned>(entity).m_AbandonmentTime;
+                if (graceFrames != 0 && (abandonedSince > frame || frame - abandonedSince < graceFrames))
+                {
+                    continue;
+                }
+
+                EntityManager.RemoveComponent<Abandoned>(entity);
+
+                // Repair the condition, otherwise the game re-abandons immediately.
+                if (EntityManager.HasComponent<BuildingCondition>(entity))
+                {
+                    EntityManager.SetComponentData(entity, new BuildingCondition { m_Condition = 0 });
+                }
+
+                // Put the property back on the rental market.
+                if (!EntityManager.HasComponent<PropertyOnMarket>(entity)
+                    && !EntityManager.HasComponent<PropertyToBeOnMarket>(entity))
+                {
+                    EntityManager.AddComponent<PropertyToBeOnMarket>(entity);
+                }
+
+                // Clear the abandoned warning icon.
+                iconBuffer.Remove(entity, config.m_AbandonedNotification);
+
+                renovated++;
+            }
+
+            entities.Dispose();
+
+            if (renovated > 0)
+            {
+                Mod.Log.Info($"Renovated {renovated} abandoned building(s) back onto the market. Session total renovated: {TotalRenovated + renovated}.");
+            }
+
+            return renovated;
         }
 
         /// <summary>
