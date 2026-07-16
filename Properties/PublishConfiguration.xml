@@ -1,0 +1,37 @@
+<Publish>
+  <!-- Leave empty for first publish; the toolchain fills it in and you keep it for updates. -->
+  <ModId Value="151415" />
+  <DisplayName Value="Auto Bulldozer" />
+  <ShortDescription Value="Automatically demolishes abandoned, condemned, and destroyed buildings." />
+  <LongDescription>
+# Auto Bulldozer
+
+Tired of manually clearing abandoned buildings? This mod does it for you.
+
+## Features
+- Automatically demolishes **abandoned** buildings (on by default)
+- Optionally demolishes **condemned** buildings
+- Optionally clears **destroyed** buildings (fire/disaster rubble)
+- Master on/off switch and per-category toggles in Options → Mods → Auto Bulldozer
+- **Grace period**: optionally wait N in-game days before demolishing abandoned buildings, giving them a chance to be re-occupied
+- **Adjustable sweep frequency** (1–64 scans per in-game day)
+- Session statistics per category, with a reset button
+- Lightweight: scans a few times per in-game day, no per-frame cost
+
+## Notes
+- Demolition uses the game's own deletion pipeline, so it's save-safe
+- Safe to add or remove from a save at any time
+  </LongDescription>
+  <!-- Add a 1:1 PNG (min 256x256) before publishing. -->
+  <Thumbnail Value="Properties/Thumbnail.png" />
+  <Tag Value="Code Mod" />
+  <ForumLink Value="" />
+  <ModVersion Value="1.1.0" />
+  <GameVersion Value="1.6.*" />
+  <ChangeLog>
+Added grace period for abandoned buildings (0-30 in-game days).
+Added sweeps-per-day setting (1-64).
+Added per-category statistics and a reset button.
+Options now gray out when the master switch is off.
+  </ChangeLog>
+</Publish>
