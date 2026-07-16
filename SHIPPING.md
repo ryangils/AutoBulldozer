@@ -1,5 +1,12 @@
 # Shipping Auto Bulldozer to Paradox Mods — detailed guide
 
+> **Superseded (2026-07-16): see [PUBLISHING.md](PUBLISHING.md) for the workflow that
+> actually works.** The Visual Studio "Publish" steps below don't function in this project
+> (no publish profiles exist — VS errors with "ModPublisherCommand is not set"), and the
+> credentials-file step (Step 1) was never used and shouldn't be: ModPublisher auto-logs-in
+> with a cached Paradox session after one interactive login. The asset-preparation and
+> troubleshooting sections below are still accurate.
+
 ## Step 0: One-time account setup
 
 1. Create a Paradox account at paradoxplaza.com if you don't have one (top-right → Log in → Create Account). This is the account your mod will be published under.
