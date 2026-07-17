@@ -31,9 +31,6 @@ namespace AutoBulldozer
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.DemolishAbandoned)), "Demolish abandoned buildings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.DemolishAbandoned)), "Automatically demolish buildings that have been abandoned by their occupants." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RenovateAbandoned)), "Renovate abandoned buildings instead (experimental)" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.RenovateAbandoned)), "Instead of demolishing, strip the abandoned status, repair the building and put it back on the rental market so new tenants can move in. If the underlying problem persists (usually rent too high for the area), the building may become abandoned again later. The grace period applies." },
-
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.DemolishCondemned)), "Demolish condemned buildings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.DemolishCondemned)), "Automatically demolish buildings that have been condemned (e.g. below required level)." },
 
@@ -57,9 +54,6 @@ namespace AutoBulldozer
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.TotalDestroyed)), "— destroyed" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.TotalDestroyed)), "Destroyed buildings cleared this session." },
-
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.TotalRenovated)), "Buildings renovated this session" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.TotalRenovated)), "Abandoned buildings renovated back onto the rental market this session." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetStatistics)), "Reset statistics" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetStatistics)), "Set all demolition counters back to zero." },

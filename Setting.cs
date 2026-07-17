@@ -27,10 +27,6 @@ namespace AutoBulldozer
         [SettingsUISection(kSection, kMainGroup)]
         public bool DemolishAbandoned { get; set; }
 
-        [SettingsUIDisableByCondition(typeof(Setting), nameof(IsAbandonedGraceDisabled))]
-        [SettingsUISection(kSection, kMainGroup)]
-        public bool RenovateAbandoned { get; set; }
-
         [SettingsUIDisableByCondition(typeof(Setting), nameof(IsModDisabled))]
         [SettingsUISection(kSection, kMainGroup)]
         public bool DemolishCondemned { get; set; }
@@ -61,9 +57,6 @@ namespace AutoBulldozer
         [SettingsUISection(kSection, kStatsGroup)]
         public string TotalDestroyed => AutoBulldozerSystem.TotalDestroyed.ToString();
 
-        [SettingsUISection(kSection, kStatsGroup)]
-        public string TotalRenovated => AutoBulldozerSystem.TotalRenovated.ToString();
-
         [SettingsUIButton]
         [SettingsUIConfirmation]
         [SettingsUISection(kSection, kStatsGroup)]
@@ -80,7 +73,6 @@ namespace AutoBulldozer
         {
             EnableMod = true;
             DemolishAbandoned = true;
-            RenovateAbandoned = false;
             DemolishCondemned = false;
             DemolishDestroyed = false;
             AbandonedGraceDays = 0;
